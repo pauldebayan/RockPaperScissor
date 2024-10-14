@@ -1,0 +1,7 @@
+counter=1
+IFS=$'\n'
+for file in *.png; do
+    convert "$file" "scissor$counter.jpg"
+    rm "$file"
+    counter=$((counter + 1))
+done

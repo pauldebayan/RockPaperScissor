@@ -1,0 +1,50 @@
+<body>
+    <video id="video" style="display: none" autoplay></video>
+    <button onclick="startVideoCapture()"> Save Image</button>
+    <canvas class="canvasImage" width="300px" height="300px" id="canvas"></canvas>
+
+      
+       
+    <script>
+      const video = document.getElementById('video');
+      const canvas = document.getElementById("canvas");
+      const context = canvas.getContext("2d");
+
+      var videoCaptureStarted = false;
+
+      async function startVideoCapture() {
+                
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        video.addEventListener('loadeddata', async () => {
+          drawToCanvas()
+        });
+            
+        videoCaptureStarted = true;
+      }
+
+        async function drawToCanvas() {
+
+          context.drawImage(video, 0, 0, 300, 300)
+         
+          requestAnimationFrame(drawToCanvas);
+        }
+
+        let counter = 1;
+        function downloadCanvasImage() {
+          if(videoCaptureStarted){
+            const link = document.createElement('a');
+            link.download = `scissor${counter}.png`; 
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            counter += 1;
+          }
+        }
+
+        setInterval(downloadCanvasImage, 3000);
+
+      
+      </script>
+   
+  </body>
+</html>

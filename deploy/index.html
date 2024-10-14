@@ -1,0 +1,126 @@
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
+
+
+
+<body>
+  <label id="prediction"></label>
+  <img src="2.jpg" id="image"/>
+  <video id="video" style="display: none" autoplay></video>
+  <div class="generateButtonDiv">
+    <button onclick="startVideoCapture()" class="generateButton" id="generateButton"> Predict</button>
+  </div>
+    <canvas class="canvasImage" width="300px" height="300px" id="canvas"></canvas>
+
+      
+       
+    <script>
+      const video = document.getElementById('video');
+      const canvas = document.getElementById("canvas");
+      const context = canvas.getContext("2d");
+
+      async function startVideoCapture() {
+                
+        // const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        // video.srcObject = stream;
+        // video.addEventListener('loadeddata', async () => {
+          drawToCanvas()
+        //});
+            
+      }
+
+        async function drawToCanvas() {
+          // const sourceX = 100;  // X position of the source rectangle in the video
+          // const sourceY = 50;   // Y position of the source rectangle in the video
+          // const sourceWidth = 200; // Width of the source rectangle
+          // const sourceHeight = 150; // Height of the source rectangle
+
+          // const destX = 0;  // X position on the canvas
+          // const destY = 0;  // Y position on the canvas
+          // const destWidth = canvas.width;  // Width of the canvas (scaling)
+          // const destHeight = canvas.height; // Height of the canvas (scaling)
+
+          let image = document.getElementById('image');
+
+          // Draw a portion of the video on the canvas
+         // context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
+
+          context.drawImage(image, 0, 0, 300, 300);
+          const imageData = context.getImageData(0, 0, 300, 300);
+
+          const { data, width, height } = imageData;
+          const tensorData = new Float32Array(width * height * 3);
+
+          for (let i = 0; i < width * height; i++) {
+            tensorData[i] = data[i * 4] / 255.0;       // Red channel
+            tensorData[i + width * height] = data[i * 4 + 1] / 255.0; // Green channel
+            tensorData[i + 2 * width * height] = data[i * 4 + 2] / 255.0; // Blue channel
+          }
+
+          const tensor = new ort.Tensor('float32', tensorData, [1, 3, height, width]);
+
+          const feeds = { "input":  tensor};
+
+          await window.session.run(feeds).then(data => {
+
+
+            let predict = data[34].cpuData;
+            const maxValue = Math.max(...predict);
+            const maxIndex = predict.indexOf(maxValue);
+
+            console.log(predict)
+            console.log(rockPaperScissor_dict[maxIndex])
+            document.getElementById('prediction').innerText = rockPaperScissor_dict[maxIndex];
+
+            //context.clearRect(0, 0, canvas.width, canvas.height);
+          });
+
+          //requestAnimationFrame(drawToCanvas); // Call the function repeatedly
+        }
+
+
+      const callSession = async function(){
+        window.session = await ort.InferenceSession.create('./model.onnx')
+        console.log("session called");
+      }
+
+      callSession();
+
+      const rockPaperScissor_dict = {
+        0: "Rock",
+        1: "Paper",
+        2: "Scissor"
+      }
+      
+      
+    </script>
+    <style>
+
+      .grid-container {
+        display: grid;
+        grid-template-areas:
+            "generateButtonDiv canvasImage";
+        grid-template-columns: 1fr 150px; 
+        grid-template-rows: 50px 200px; 
+        gap: 20px; 
+        padding: 20px;
+      }
+      .generateButtonDiv{
+        grid-area: generateButtonDiv;
+      }
+      
+      .generateButton {
+        background-color: #007BFF; /* Green */
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 24px;
+        width: 522px;
+        margin-left: 0px;
+      }
+      .canvasImage{
+        border: 5px solid #007BFF; 
+      }
+      
+      </style>
+  </body>
+</html>

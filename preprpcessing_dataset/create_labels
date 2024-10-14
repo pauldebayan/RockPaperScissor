@@ -1,0 +1,9 @@
+for i in {1..100}
+do
+  echo rock$i.jpg, 0 >> labels.csv
+  echo paper$i.jpg, 1 >> labels.csv
+  echo scissor$i.jpg, 2 >> labels.csv
+done
+
+
+
