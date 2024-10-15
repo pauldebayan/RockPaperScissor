@@ -4,7 +4,7 @@
 
 <body>
   <label id="prediction"></label>
-  <img src="2.jpg" id="image"/>
+  <!-- <img src="scissor1.jpg" id="image"/> -->
   <video id="video" style="display: none" autoplay></video>
   <div class="generateButtonDiv">
     <button onclick="startVideoCapture()" class="generateButton" id="generateButton"> Predict</button>
@@ -20,11 +20,11 @@
 
       async function startVideoCapture() {
                 
-        // const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        // video.srcObject = stream;
-        // video.addEventListener('loadeddata', async () => {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        video.addEventListener('loadeddata', async () => {
           drawToCanvas()
-        //});
+        });
             
       }
 
@@ -39,12 +39,9 @@
           // const destWidth = canvas.width;  // Width of the canvas (scaling)
           // const destHeight = canvas.height; // Height of the canvas (scaling)
 
-          let image = document.getElementById('image');
-
-          // Draw a portion of the video on the canvas
-         // context.drawImage(image, sourceX, sourceY, sourceWidth, sourceHeight, destX, destY, destWidth, destHeight);
-
-          context.drawImage(image, 0, 0, 300, 300);
+          // let image = document.getElementById('image');
+          context.clearRect(0, 0, canvas.width, canvas.height);
+          context.drawImage(video, 0, 0, 300, 300);
           const imageData = context.getImageData(0, 0, 300, 300);
 
           const { data, width, height } = imageData;
@@ -71,10 +68,10 @@
             console.log(rockPaperScissor_dict[maxIndex])
             document.getElementById('prediction').innerText = rockPaperScissor_dict[maxIndex];
 
-            //context.clearRect(0, 0, canvas.width, canvas.height);
+            
           });
-
-          //requestAnimationFrame(drawToCanvas); // Call the function repeatedly
+          
+          requestAnimationFrame(drawToCanvas); 
         }
 
 

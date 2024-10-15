@@ -1,4 +1,4 @@
-for i in {1..100}
+for i in {1..800}
 do
   echo rock$i.jpg, 0 >> labels.csv
   echo paper$i.jpg, 1 >> labels.csv

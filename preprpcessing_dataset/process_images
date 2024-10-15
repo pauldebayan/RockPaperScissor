@@ -1,6 +1,7 @@
-counter=1
+counter=601
 IFS=$'\n'
 for file in *.png; do
+    # -gravity center -background white -extent 300x300
     convert "$file" "scissor$counter.jpg"
     rm "$file"
     counter=$((counter + 1))

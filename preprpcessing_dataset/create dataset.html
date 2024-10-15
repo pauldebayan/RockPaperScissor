@@ -30,11 +30,11 @@
           requestAnimationFrame(drawToCanvas);
         }
 
-        let counter = 1;
+        let counter = 101;
         function downloadCanvasImage() {
           if(videoCaptureStarted){
             const link = document.createElement('a');
-            link.download = `scissor${counter}.png`; 
+            link.download = `paper${counter}.png`; 
             link.href = canvas.toDataURL('image/png');
             link.click();
             counter += 1;
