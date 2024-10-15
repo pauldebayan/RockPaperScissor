@@ -29,19 +29,10 @@
       }
 
         async function drawToCanvas() {
-          // const sourceX = 100;  // X position of the source rectangle in the video
-          // const sourceY = 50;   // Y position of the source rectangle in the video
-          // const sourceWidth = 200; // Width of the source rectangle
-          // const sourceHeight = 150; // Height of the source rectangle
-
-          // const destX = 0;  // X position on the canvas
-          // const destY = 0;  // Y position on the canvas
-          // const destWidth = canvas.width;  // Width of the canvas (scaling)
-          // const destHeight = canvas.height; // Height of the canvas (scaling)
-
-          // let image = document.getElementById('image');
           context.clearRect(0, 0, canvas.width, canvas.height);
+          context.globalAlpha = 0.8;
           context.drawImage(video, 0, 0, 300, 300);
+
           const imageData = context.getImageData(0, 0, 300, 300);
 
           const { data, width, height } = imageData;
