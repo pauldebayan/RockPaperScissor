@@ -1,3 +1,5 @@
 #rockPaperScissor_dataset
-model.pt
-model.onnx
+#model.pt
+#model.onnx
+.firebaserc
+firebase.json

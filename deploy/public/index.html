@@ -1,13 +1,40 @@
 <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
 
+<style>
 
+  .grid-container {
+    display: grid;
+    grid-template-areas:
+        "predictButtonDiv canvasImage";
+    grid-template-columns: 1fr 150px; 
+    grid-template-rows: 50px 200px; 
+    gap: 20px; 
+    padding: 20px;
+  }
+  .predictButtonDiv{
+    grid-area: predictButtonDiv;
+  }
+  
+  .predictButton {
+    background-color: #007BFF; /* Green */
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 24px;
+    width: 310px;
+    margin-left: 0px;
+  }
+  .canvasImage{
+    border: 5px solid #007BFF; 
+  }
+  
+  </style>
 
 <body>
   <label id="prediction"></label>
-  <!-- <img src="scissor1.jpg" id="image"/> -->
   <video id="video" style="display: none" autoplay></video>
-  <div class="generateButtonDiv">
-    <button onclick="startVideoCapture()" class="generateButton" id="generateButton"> Predict</button>
+  <div class="predictButtonDiv">
+    <button onclick="startVideoCapture()" class="predictButton" id="predictButton"> Predict</button>
   </div>
     <canvas class="canvasImage" width="300px" height="300px" id="canvas"></canvas>
 
@@ -81,34 +108,6 @@
       
       
     </script>
-    <style>
-
-      .grid-container {
-        display: grid;
-        grid-template-areas:
-            "generateButtonDiv canvasImage";
-        grid-template-columns: 1fr 150px; 
-        grid-template-rows: 50px 200px; 
-        gap: 20px; 
-        padding: 20px;
-      }
-      .generateButtonDiv{
-        grid-area: generateButtonDiv;
-      }
-      
-      .generateButton {
-        background-color: #007BFF; /* Green */
-        color: white;
-        padding: 15px;
-        text-align: center;
-        font-size: 24px;
-        width: 522px;
-        margin-left: 0px;
-      }
-      .canvasImage{
-        border: 5px solid #007BFF; 
-      }
-      
-      </style>
+    
   </body>
 </html>
